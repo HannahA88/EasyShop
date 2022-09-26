@@ -9,12 +9,18 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 
+
 export default function CheckboxList(props) {
   const [checked, setChecked] = React.useState([0]);
 
 console.log(props.productList)
 
-
+const removeItem = (id) => {
+  const event = new CustomEvent('removeItem', { detail: id });
+  document.dispatchEvent(event);
+  console.log('removeItem')
+  // props.productList.splice(id, 1);
+} 
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -30,16 +36,18 @@ console.log(props.productList)
   };
 
   return (
-    <List sx={{ width: '100%', maxWidth: 700, bgcolor: 'rgba(0, 0, 0, 0.1)' }}>
+    <List sx={{ width: '100%', maxWidth: 700, bgcolor: 'rgba(0, 0, 0, 0.1)' }} label="List of products?">
       {props.productList.map((value) => {
         const labelId = `checkbox-list-label-${value.name}`;
-
+        
         return (
-          <ListItem
+           <ListItem
             key={value}
             secondaryAction={
               <IconButton edge="end" aria-label="comments">
-                <DeleteIcon />
+                <DeleteIcon 
+               onClick={() => removeItem(value.name)}
+                />
               </IconButton>
             }
             disablePadding
@@ -54,7 +62,7 @@ console.log(props.productList)
                   inputProps={{ 'aria-labelledby': labelId }}
                   />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`${value.name} ${value.quantity + 1} ${value.type}`} />
+              <ListItemText id={labelId} primary={`${value.name} ${value.quantity} ${value.type}`} />
             </ListItemButton>
           </ListItem>
         );

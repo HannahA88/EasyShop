@@ -9,11 +9,22 @@ import Quantity from './quantity';
 import AddButton from './addbutton';
 import Components from './components';
 import { useState } from 'react';
+// import { store } from './storeproduct'
 
 function App() {
-  const [productList, setProductList] = useState ([
-  ]);
-  const [product, setProduct] = useState ({
+  let storageItems = []
+  if (localStorage.getItem('productList')) {
+    storageItems = JSON.parse(localStorage.getItem('productList'))
+  }
+  const [productList, setProductList] = useState([...storageItems]);
+  document.addEventListener('removeItem', event => {
+    const {detail} = event
+    setProductList((prevState) => {
+
+        return prevState.filter(el => el.name !== detail)
+          })
+  })
+  const [product, setProduct] = useState({
     name: '',
     quantity: '',
     type: ''
@@ -34,7 +45,7 @@ function App() {
       <Quantity setProduct={setProduct}/>
       <Type setProduct={setProduct} />
       </div>
-
+<h1 className='products'>List of Products</h1>
     <div className='checklist'>
         <Components productList={productList} setProductList={setProductList}/>
     </div>
