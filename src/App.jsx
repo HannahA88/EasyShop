@@ -13,23 +13,17 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [productList, setProductList] = useState([]);
-  useEffect(() => {
-    if (localStorage.getItem("productList")) {
-      setProductList(JSON.parse(localStorage.getItem("productList")));
-    }
-  }, []);
-
-  document.addEventListener("removeItem", (event) => {
-    const { detail } = event;
-    setProductList((prevState) => {
-      return prevState.filter((el) => el.name !== detail);
-    });
-  });
   const [product, setProduct] = useState({
     name: "",
     quantity: "",
     type: "",
   });
+
+  useEffect(() => {
+    if (localStorage.getItem("productList")) {
+      setProductList(JSON.parse(localStorage.getItem("productList")));
+    }
+  }, []);
 
   return (
     <div className="App">
