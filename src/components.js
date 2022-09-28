@@ -14,10 +14,13 @@ export default function CheckboxList(props) {
   console.log(props.productList);
 
   const removeItem = (id) => {
-    const event = new CustomEvent("removeItem", { detail: id });
-    document.dispatchEvent(event);
-    console.log("removeItem");
-    // props.productList.splice(id, 1);
+    let productList = props.productList;
+    let item = productList.filter((el) => el.name === id); // it will retrun an array
+    let index = productList.indexOf(item[0]); // just the first one is important
+    productList.splice(index, 1);
+    console.log(productList);
+    props.setProductList([...productList]);
+    localStorage.setItem("productList", JSON.stringify(productList));
   };
 
   const handleToggle = (value) => () => {
